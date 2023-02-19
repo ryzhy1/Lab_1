@@ -2,14 +2,33 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "(lldb) Запустить",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "Введите имя программы, например: ${workspaceFolder}/a.out",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb"
+    },
+    {
+      "name": "(lldb) Подключить",
+      "type": "cppdbg",
+      "request": "attach",
+      "program": "Введите имя программы, например: ${workspaceFolder}/a.out",
+      "MIMode": "lldb"
+    },
+    {
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/Yaroslav/Рабочий стол/lab_1/Lab_1/1",
-      "program": "/home/Yaroslav/Рабочий стол/lab_1/Lab_1/1/build/Debug/outDebug",
+      "cwd": "/Users/yaroslav/Desktop/лаба по алгосам/2sem/Lab_1",
+      "program": "/Users/yaroslav/Desktop/лаба по алгосам/2sem/Lab_1/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

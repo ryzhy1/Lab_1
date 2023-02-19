@@ -1,10 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include <time.h>
-#include <algorithm>
 #include <vector>
-#include <iomanip>
-#include <sys/time.h>
+#include <cmath>
+#include <algorithm>
 
 using namespace std;
 
@@ -67,34 +65,44 @@ void printTimeUse() {
 	printf("Time taken: %.7fs\n", (double)(clock() - start)/CLOCKS_PER_SEC);
 }
 
+// ---------- code ----------
+
 int main() {
     getFirstTime();
 
-    int n;
-    fin >> n;
+    int minCost = pow(10, 10);
+    int N;
+    fin >> N;
 
-    vector<int> a(n);
-    vector<int> b(n);
-
-    for (int i = 0; i < n; i++) {
-        int ai;
-        fin >> ai;
-        a[i] = ai;
-    }
-    for (int i = 0; i < n; i++) {
-        int bi;
-        fin >> bi;
-        b[i] = bi;
+    int result = 0;
+    vector<int> prices(7);
+    for (int i = 0; i < 7; i++) {
+        fin >> prices[i];
     }
 
-    sort(a.begin(), a.end(), greater<int>());
-    sort(b.begin(), b.end(), greater<int>());
-
-    int sum = 0;
-    for (int i = 0; i < n; i++) {
-        sum += a[i] * b[i];
+    for (int i = 6; i >= 0; i--) {
+        int N2 = N;
+        if (N != 0) {
+            int k = N / pow(10, i);
+            if (k > 0) {
+                result += k * prices[i];
+                N -= k * pow(10, i);
+            } 
+            if (k == 0) {
+                N2 -= pow(10, i);
+                if (N2 <= 0) {
+                    minCost = min(minCost, prices[i]);
+                }
+            }
+        } else {
+            break;
+        }
     }
-    fout << sum << endl;
+
+    fout << min(result, minCost);
+
+    fin.close();
+    fout.close();
     printTimeUse();
     printMemoryUsage();
     return 0;

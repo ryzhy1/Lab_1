@@ -7,24 +7,24 @@ using namespace std;
 
 // ---------- macos ----------
 
-// #include <mach/task.h>
-// #include <mach/mach_init.h>
+#include <mach/task.h>
+#include <mach/mach_init.h>
 
-// void getMemoryUsage() { 
-// 	struct task_basic_info t_info;
-// 	mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT;
+void printMemoryUsage() { 
+	struct task_basic_info t_info;
+	mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT;
 
-// 	if (KERN_SUCCESS != task_info(mach_task_self(),
-// 		TASK_BASIC_INFO, (task_info_t)&t_info,
-// 		&t_info_count))
-// 	{
-// 		printf("Error!");
-// 	}
-// 	else
-// 	{
-// 		printf("Memory used: %f MB\n", t_info.resident_size / 1024.0 / 1024.0);
-// 	}
-// }
+	if (KERN_SUCCESS != task_info(mach_task_self(),
+		TASK_BASIC_INFO, (task_info_t)&t_info,
+		&t_info_count))
+	{
+		printf("Error!");
+	}
+	else
+	{
+		printf("Memory used: %f MB\n", t_info.resident_size / 1024.0 / 1024.0);
+	}
+}
 
 // ---------- windows ----------
 
@@ -42,14 +42,14 @@ using namespace std;
 
 // ---------- linux ----------
 
-#include <sys/resource.h>
-#include <sys/time.h>
+// #include <sys/resource.h>
+// #include <sys/time.h>
 
-void printMemoryUsage() {
-   struct rusage usage;
-	  getrusage(RUSAGE_SELF, &usage);
-	  cout << "Memory used: " << usage.ru_maxrss / 1024.0 << " MB\n";
-}
+// void printMemoryUsage() {
+//    struct rusage usage;
+// 	  getrusage(RUSAGE_SELF, &usage);
+// 	  cout << "Memory used: " << usage.ru_maxrss / 1024.0 / 1024.0 << " MB\n";
+// }
 
 ifstream fin("input.txt"); 
 ofstream fout("output.txt"); 
@@ -74,7 +74,6 @@ int main() {
 	int* p = new int[n];
 	int* w = new int[n];
 	double* pw = new double[n];
-
 
 	for (int i = 0; i < n; i++) {
 		fin >> p[i] >> w[i];
