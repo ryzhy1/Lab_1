@@ -17,19 +17,19 @@ def main(n, segments):
     return points
 
 main(3, [[4, 7], [1, 3], [2, 5], [5, 6]])
-# if __name__ == '__main__':
+if __name__ == '__main__':
     
-#     with open("input.txt", "r") as f, open("output.txt", "w") as out:
-#         n = int(f.readline())
-#         segments = []
-#         for i in range(n):
-#             a, b = map(int, f.readline().split())
-#             segments.append((a, b))
+    with open("input.txt", "r") as f, open("output.txt", "w") as out:
+        n = int(f.readline())
+        segments = []
+        for i in range(n):
+            a, b = map(int, f.readline().split())
+            segments.append((a, b))
         
-#         res = main(n, segments)
+        res = main(n, segments)
 
-#         out.write(str(len(res)) + "\n")
-#         out.write(" ".join(map(str, res)))
+        out.write(str(len(res)) + "\n")
+        out.write(" ".join(map(str, res)))
 
     
 #     print("Время: ", (time.time() - start_time))

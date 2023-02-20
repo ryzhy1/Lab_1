@@ -39,6 +39,10 @@
     "iostream": "cpp",
     "__locale": "cpp",
     "algorithm": "cpp",
-    "iomanip": "cpp"
-  }
+    "iomanip": "cpp",
+    "__split_buffer": "cpp",
+    "deque": "cpp",
+    "string": "cpp"
+  },
+  "C_Cpp_Runner.useAddressSanitizer": false
 }

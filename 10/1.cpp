@@ -4,57 +4,70 @@
 
 using namespace std;
 
+int n, s;
+
 struct Apple {
-    int a, b, number;
+    int a;
+    int b;
+    int number;
 };
+
+vector<Apple> plusa;
+vector<Apple> minusb;
+
+bool pluscompare(Apple& a, Apple& b) {
+    return (a.a < b.a);
+}
+
+bool minuscompare(Apple& a, Apple& b) {
+    return (a.b > b.b);
+}
 
 int main() {
     freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    freopen("input.txt", "w", stdout);
 
-    int n, s;
-    cin >> n >> s;
-
-    vector<Apple> plusa, minusb;
+    scanf("%d %d", &n, &s);
     for (int i = 1; i <= n; i++) {
         int a, b;
-        cin >> a >> b;
+        scanf("%d %d", &a, &b);
+        Apple x;
+        x.a = a;
+        x.b = b;
+        x.number = i;
         if (b - a > 0)
-            plusa.emplace_back(Apple{a, b, i});
+            plusa.push_back(x);
         else
-            minusb.emplace_back(Apple{a, b, i});
+            minusb.push_back(x);
     }
 
-    sort(begin(plusa), end(plusa), [](const Apple& a, const Apple& b) {
-        return a.a < b.a;
-    });
-    sort(begin(minusb), end(minusb), [](const Apple& a, const Apple& b) {
-        return a.b > b.b;
-    });
+    sort(plusa.begin(), plusa.end(), pluscompare);
+    sort(minusb.begin(), minusb.end(), minuscompare);
 
     vector<int> ressequence;
-    for (const auto& apple : plusa) {
-        if (s - apple.a <= 0) {
-            cout << -1 << endl;
+    for (int i = 0; i < plusa.size(); i++) {
+        if (s - plusa[i].a <= 0) {
+            printf("-1");
             return 0;
+        } else {
+            s += (plusa[i].b - plusa[i].a);
+            ressequence.push_back(plusa[i].number);
         }
-        s += apple.b - apple.a;
-        ressequence.push_back(apple.number);
     }
 
-    for (const auto& apple : minusb) {
-        if (s - apple.a <= 0) {
-            cout << -1 << endl;
+    for (int i = 0; i < minusb.size(); i++) {
+        if (s - minusb[i].a <= 0) {
+            printf("-1");
             return 0;
+        } else {
+            s += (minusb[i].b - minusb[i].a);
+            ressequence.push_back(minusb[i].number);
         }
-        s += apple.b - apple.a;
-        ressequence.push_back(apple.number);
     }
 
-    for (const auto& num : ressequence) {
-        cout << num << " ";
+    for (int i = 0; i < ressequence.size(); i++) {
+        printf("%d ", ressequence[i]);
     }
-    cout << endl;
 
     return 0;
 }
