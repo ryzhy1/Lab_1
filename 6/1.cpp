@@ -1,9 +1,10 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 #include <fstream>
-#include <time.h>
 #include <iomanip>
+#include <algorithm>
+#include <time.h>
+#include <string>
+#include <vector>
 
 // ---------- macos ----------
 
@@ -33,7 +34,7 @@
 
 using namespace std;
 
-void printMemoryUse()
+void printMemoryUsage()
 {
     PROCESS_MEMORY_COUNTERS_EX pmc;
     GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
@@ -68,50 +69,31 @@ void printTimeUse() {
 	printf("Time taken: %.7fs\n", (double)(clock() - start)/CLOCKS_PER_SEC);
 }
 
-// ---------- code ----------
-
-
-vector<int> solve(int n, vector<pair<int, int> > segments) {
-    sort(segments.begin(), segments.end(), [](const auto& x, const auto& y) {
-        return x.second < y.second;
-    });
-
-    vector<int> points;
-    int rightmost = -1;
-
-    for (const auto& segment : segments) {
-        if (segment.first > rightmost) {
-            rightmost = segment.second;
-            points.push_back(rightmost);
-        }
-    }
-
-    return points;
-}
-
 int main() {
     getFirstTime();
 
-    int n;
+    vector<int> nums;
+    int n, a;
     fin >> n;
 
-    vector<pair<int, int> > segments(n);
-
-    for (int i = 0; i < n; i++) {
-        int a, b;
-        fin >> a >> b;
-        segments[i] = make_pair(a, b);
+    for (int i = 0; i < n; i ++){
+        int a;
+        fin >> a;
+        nums.push_back(a);
     }
 
-    vector<int> res = solve(n, segments);
-
-    fout << res.size() << "\n";
-    for (int point : res) {
-        fout << point << " ";
+    for (int i = 0; i < n; i++) {   
+        int maxi = 0;
+        for (auto num : nums) {
+            if (num > maxi) {
+                maxi = num;
+            }
+        }
+        fout << to_string(maxi);
+        nums.erase(find(nums.begin(), nums.end(), maxi));
+        maxi = 0;
     }
-    fout << "\n";
     printTimeUse();
-    printMemoryUse();
-
+    printMemoryUsage();
     return 0;
 }

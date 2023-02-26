@@ -11,6 +11,8 @@
 // #include <mach/task.h>
 // #include <mach/mach_init.h>
 
+// using namespace std;
+
 // void printMemoryUsage() { 
 // 	struct task_basic_info t_info;
 // 	mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT;
@@ -48,6 +50,8 @@ void printMemoryUsage() {
 // #include <sys/resource.h>
 // #include <sys/time.h>
 
+// using namespace std;
+
 // void printMemoryUsage() {
 //    struct rusage usage;
 // 	  getrusage(RUSAGE_SELF, &usage);
@@ -67,35 +71,51 @@ void printTimeUse() {
 	printf("Time taken: %.7fs\n", (double)(clock() - start)/CLOCKS_PER_SEC);
 }
 
+// --------------- code ---------------
+
+int maxLectures(vector<int>& begins, vector<int>& ends, int lecturesAmount) {
+    int lastLect = 0, minTimeLectListen = 0, count = 0;
+
+    while (minTimeLectListen < 1440) {
+        minTimeLectListen = 1440;
+
+        for (int i = 0; i < lecturesAmount; i++) {
+            if (begins[i] >= lastLect && ends[i] < minTimeLectListen) {
+                minTimeLectListen = ends[i];
+            }
+        }   
+
+        if (minTimeLectListen < 1440) {
+            lastLect = minTimeLectListen;
+            count++;
+        }
+    }
+
+    return count;
+}
+
 int main() {
     getFirstTime();
 
+    vector<pair<int, int> > segments;
     int n;
     fin >> n;
 
-    vector<int> a(n);
-    vector<int> b(n);
+    vector<int> begins;
+    vector<int> ends;
+
+
 
     for (int i = 0; i < n; i++) {
-        int ai;
-        fin >> ai;
-        a[i] = ai;
-    }
-    for (int i = 0; i < n; i++) {
-        int bi;
-        fin >> bi;
-        b[i] = bi;
+        int s, f;
+        fin >> s >> f;
+        begins.push_back(s);
+        ends.push_back(f);
     }
 
-    sort(a.begin(), a.end(), greater<int>());
-    sort(b.begin(), b.end(), greater<int>());
-
-    int sum = 0;
-    for (int i = 0; i < n; i++) {
-        sum += a[i] * b[i];
-    }
-    fout << sum << endl;
+    fout << maxLectures(begins, ends, n);
     printTimeUse();
     printMemoryUsage();
+
     return 0;
 }
