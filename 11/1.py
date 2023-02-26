@@ -8,7 +8,7 @@ def knapsack(W, n, w):
                     dp[i][j] = dp[i-1][j]
                 else:
                     dp[i][j] = max(dp[i-1][j], dp[i-1][j-w[i-1]]+w[i-1])
-        pprint(dp)
+        pprint(dp) 
         return dp[n][W]
 
 with open("input.txt") as f, open("output.txt", "w") as out:
