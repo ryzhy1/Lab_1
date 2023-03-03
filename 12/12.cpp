@@ -1,7 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <math.h>
-#include <algorithm>
 #include <vector>
 
 // ---------- macos ----------
@@ -70,45 +68,59 @@ void printTimeUse() {
 int main() {
     getFirstTime();
     
-    int W, n;
-    fin >> W >> n;
+    int n;
+    fin >> n;
 
-    // чтение весов слитков
-    vector<int> w(n);
+    vector<int> a(n);
+    int sum = 0;
+
     for (int i = 0; i < n; i++) {
-        fin >> w[i];
+        fin >> a[i];
+        sum += a[i];
     }
 
-    sort(w.begin(), w.end());
-
-    // создание двумерного динамического массива
-    int **dp = new int*[n];
-    for (int i = 0; i <= n; i++) {
-        dp[i] = new int[W];
+    if (sum % 2 != 0) {
+        fout << -1 << endl;
+        return 0;
     }
 
-    // заполнение первой строки нулями
-    for (int w = 0; w <= W; w++) {
-        dp[0][w] = 0;
-    }
+    vector<vector<int> > dp(n + 1, vector<int>(sum / 2 + 1, 0));
 
-    // заполнение таблицы
     for (int i = 1; i <= n; i++) {
-        for (int j = 0; j <= W; j++) {
-            dp[i][j] = dp[i-1][j]; // заполняем из предыдущей строки
-            if (w[i-1] <= j) { // если слиток помещается в рюкзак
-                dp[i][j] = max(dp[i-1][j-w[i-1]] + w[i-1], dp[i-1][j]);
+        for (int j = 1; j <= sum / 2; j++) {
+            if (j < a[i - 1]) {
+                dp[i][j] = dp[i - 1][j];
+            } else {
+                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - a[i - 1]] + a[i - 1]);
             }
         }
-        cout << endl;
     }
 
-    fout << dp[n][W] << endl;
-
-    for (int i = 0; i <= n; i++) {
-        delete[] dp[i];
+    if (dp[n][sum / 2] != sum / 2) {
+        fout << -1 << endl;
+        return 0;
     }
-    delete[] dp;
+
+    vector<int> ans;
+    int i = n, j = sum / 2;
+
+    while (i > 0 && j > 0) {
+        if (dp[i][j] == dp[i - 1][j]) {
+            i--;
+        } else {
+            ans.push_back(i);
+            j -= a[i - 1];
+            i--;
+        }
+    }
+
+    fout << ans.size() << endl;
+
+    for (int i = 0; i < ans.size(); i++) {
+        fout << ans[i] << " ";
+    }
+
+    fout << endl;
 
     printTimeUse();
     printMemoryUsage();

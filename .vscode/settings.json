@@ -42,7 +42,8 @@
     "iomanip": "cpp",
     "__split_buffer": "cpp",
     "deque": "cpp",
-    "string": "cpp"
+    "string": "cpp",
+    "ostream": "cpp"
   },
   "C_Cpp_Runner.useAddressSanitizer": false
 }
