@@ -1,4 +1,4 @@
-with(open('input13.txt')) as file :
+with(open('input.txt')) as file :
     prices = list(map(int, file.readline().split()))
 
 
@@ -37,5 +37,5 @@ def we_are_still_friends(prices):
 
 result = we_are_still_friends(prices)
 
-f = open('output13.txt', 'w')
+f = open('output.txt', 'w')
 f.write(str(result))
