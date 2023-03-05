@@ -1,6 +1,12 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <vector>
+#include <math.h>
+#include <time.h>
+#include <stdlib.h>
+#include <algorithm>
+#include <type_traits>
 
 // ---------- macos ----------
 
@@ -53,7 +59,7 @@ void printMemoryUsage() {
 // }
 
 ifstream fin("input.txt"); 
-ofstream fout("output.txt"); 
+ofstream fout("output.txt");
 
 clock_t start;
 
@@ -65,59 +71,71 @@ void printTimeUse() {
 	printf("Time taken: %.7fs\n", (double)(clock() - start)/CLOCKS_PER_SEC);
 }
 
+//------------------------------------
+
 int main() {
     getFirstTime();
+
+    // ---- code starts here -----
 
     int n;
     fin >> n;
 
-    vector<int> a(n);
+    vector <int> a (n);
+    for(auto &i : a)
+        fin >> i;
+
     int sum = 0;
+    for(auto &i : a)
+        sum += i;
 
-    for (int i = 0; i < n; i++) {
-        fin >> a[i];
-        sum += a[i];
-    }
-
-    if (sum % 3 != 0) {
-        fout << 0 << endl;
+    if(sum % 3) {
+        fout << 0;
         return 0;
     }
 
-    vector<vector<int> > dp(n + 1, vector<int>(sum / 3 + 1, 0));
+    vector <int> test (2 * sum / 3);
 
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= sum / 3; j++) {
-            if (j < a[i - 1]) {
-                dp[i][j] = dp[i - 1][j];
-            } else {
-                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - a[i - 1]] + a[i - 1]);
+    for(int i = 0; i < (1ll << n); i++) {
+        int sum1 = 0;
+        for (int j = 0; j < n; ++j) {
+            if (i & (1ll << j))
+                sum1 += a[j];
+        }
+
+        if (sum1 == sum / 3) {
+            int cur = 0;
+            for (int j = 0; j < n; ++j) {
+                if (!(i & (1ll << j)))
+                    test[cur++] = a[j];
+            }
+
+            for (int j = 0; j < (1ll << cur); j++) {
+                int sum2 = 0;
+                for (int k = 0; k < cur; ++k) {
+                    if (j & (1ll << k))
+                        sum2 += test[k];
+                }
+
+                if (sum2 == sum / 3) {
+                    fout << 1;
+                    printTimeUse();
+                    printMemoryUsage();
+                    return 0;
+                }
             }
         }
     }
 
-    if (dp[n][sum / 3] != sum / 3) {
-        fout << 0 << endl;
-        return 0;
-    }
+    fout << 0;
 
-    vector<int> ans;
-    int i = n, j = sum / 3;
 
-    while (i > 0 && j > 0) {
-        if (dp[i][j] == dp[i - 1][j]) {
-            i--;
-        } else {
-            ans.push_back(i);
-            j -= a[i - 1];
-            i--;
-        }
-    }
-
-    fout << 1 << endl;
+    // ---- code ends here -----
 
     printTimeUse();
     printMemoryUsage();
 
+    fin.close();
+    fout.close();
     return 0;
 }
