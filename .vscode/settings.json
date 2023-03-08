@@ -43,7 +43,8 @@
     "__split_buffer": "cpp",
     "deque": "cpp",
     "string": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "stack": "cpp"
   },
   "C_Cpp_Runner.useAddressSanitizer": false
 }

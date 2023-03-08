@@ -103,7 +103,7 @@ int main() {
                 sum1 += a[j];
         }
 
-        if (sum1 == sum / 3) {
+        if (sum1 == sum / 3) { // 
             int cur = 0;
             for (int j = 0; j < n; ++j) {
                 if (!(i & (1ll << j)))
